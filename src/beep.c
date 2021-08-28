@@ -94,19 +94,7 @@ void beep_start(struct BeepInstance *instance, int frequency) {
 }
 
 void beep_stop(struct BeepInstance *instance) {
-    const struct input_event e = {
-        .code = SND_TONE,
-        .time = (struct timeval) {
-            .tv_sec = 0, .tv_usec = 0,
-        },
-        .type = EV_SND,
-        .value = 0, /* zero frequency = stop */
-    };
-
-    const ssize_t bytes_written = write(instance->device_file_descriptor, &e, sizeof(e));
-    if (bytes_written != sizeof(struct input_event)) {
-        /* hmm */
-    }
+    beep_start(instance, 0);
 }
 
 void beep_play(struct BeepInstance *instance, int frequency, uint32_t duration_ms) {
