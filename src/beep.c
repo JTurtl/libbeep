@@ -63,9 +63,14 @@ struct BeepInstance beep_init_with(const char *device_path) {
         return BAD_INSTANCE;
     }
 
-    return (struct BeepInstance) {
+    struct BeepInstance result =  {
         .device_file_descriptor = fd,
     };
+
+    /* in case something was already playing */
+    beep_stop(&result);
+
+    return result;
 }
 
 void beep_quit(struct BeepInstance *instance) {
